@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Math Grade 6 </title>
+    <style>
+        /* ============================== */
+        /* 1. General Styles and Fonts (Advanced Dark Theme) */
+        /* ============================== */
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+            margin: 0; 
+            padding: 0; 
+            background-color: #0d1117; 
+            color: #c9d1d9; 
+            direction: ltr; /* Left-to-Right writing direction */
+            text-align: left; /* Text alignment to the left */
+            display: flex; 
+            overflow-x: hidden; 
+        }
+        
+        /* Background Glow Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 20%, rgba(100, 50, 150, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 20% 80%, rgba(50, 100, 150, 0.1) 0%, transparent 40%);
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        /* ============================== */
+        /* 2. Sidebar */
+        /* ============================== */
+        .sidebar {
+            width: 280px;
+            background-color: #161b22; 
+            color: #c9d1d9;
+            padding: 25px 0;
+            box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5); 
+            height: 100vh; 
+            position: fixed; 
+            left: 0; 
+            top: 0;
+            z-index: 100;
+            border-right: 1px solid #30363d; 
+        }
+        .sidebar-header {
+            text-align: center;
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #30363d;
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #58a6ff; 
+            letter-spacing: 0.5px;
+        }
+        .sidebar-menu a {
+            display: block;
+            padding: 15px 30px;
+            color: #8b949e; 
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s, border-right 0.2s;
+            font-size: 1.1em;
+            border-right: 4px solid transparent; 
+        }
+        .sidebar-menu a:hover, .sidebar-menu .active {
+            background-color: #21262d; 
+            border-right: 4px solid #8b949e; 
+            color: #c9d1d9;
+        }
+        .sidebar-menu a::before {
+            content: "➤"; 
+            margin-right: 15px; 
+            margin-left: 0;
+            font-weight: bold;
+            color: #58a6ff; 
+        }
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid #30363d;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .sidebar-footer a {
+            background-color: #21262d;
+            color: #58a6ff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            transition: background-color 0.2s;
+        }
+        .sidebar-footer a:hover {
+            background-color: #30363d;
+        }
+
+        /* ============================== */
+        /* 3. Main Content Area */
+        /* ============================== */
+        .main-content {
+            margin-left: 280px; 
+            padding: 50px; 
+            flex-grow: 1;
+            position: relative;
+        }
+        .main-card {
+            background-color: #161b22; 
+            padding: 40px;
+            border-radius: 8px; 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); 
+            border: 1px solid #30363d; 
+        }
+        .main-card h1 {
+            color: #ffffff; 
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(88, 166, 255, 0.5); 
+        }
+
+        /* ============================== */
+        /* 4. Buttons (Units/Lessons) */
+        /* ============================== */
+        .selector-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px; 
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .selector-section h2 {
+            width: 100%;
+            text-align: center;
+            color: #58a6ff;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+        .selector-section button { 
+            background-color: #21262d; 
+            color: #c9d1d9; 
+            border: 1px solid #30363d; 
+            padding: 15px 30px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: background-color 0.2s, color 0.2s, box-shadow 0.2s; 
+            font-size: 1.2em;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            flex-basis: 45%; 
+            max-width: 350px; 
+            text-align: left; 
+        }
+        .selector-section button:hover { 
+            background-color: #2b303b; 
+            color: #58a6ff; 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(88, 166, 255, 0.4); 
+        }
+
+        /* Interactive Content Styling */
+        #lesson-selector, #lesson-display { 
+            display: none; 
+            margin-top: 40px; 
+            padding: 30px;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            background-color: #161b22;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        /* Lesson Content Styling */
+        .lesson-content h3 { 
+            color: #58a6ff; 
+            border-bottom: 2px solid #30363d; 
+            padding-bottom: 10px;
+            margin-top: 25px;
+            font-size: 1.8em;
+            font-weight: 500;
+        }
+        .lesson-content h4 {
+            color: #3fb950; 
+            margin-top: 15px;
+            font-size: 1.4em;
+            border-left: 3px solid #3fb950; 
+            padding-left: 10px; 
+        }
+        .lesson-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .lesson-content ul li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #c9d1d9;
+        }
+        .lesson-content ul li::before {
+            content: "✓"; 
+            margin-right: 15px; 
+            margin-left: 0;
+            font-weight: bold;
+            color: #3fb950; 
+        }
+        .lesson-content p {
+            font-size: 1.1em;
+            line-height: 1.8; 
+            color: #8b949e;
+        }
+        .math-text {
+            display: block;
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 1.2em;
+            color: #79c0ff; 
+        }
+        .reminder {
+            background-color: #21262d;
+            border-left: 5px solid #ffcc00; 
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 1em;
+            color: #ffcc00;
+        }
+        /* Back Button */
+        .lesson-content button {
+            background-color: #30363d;
+            color: #c9d1d9;
+            padding: 12px 25px;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            margin-top: 30px;
+            display: block; 
+            width: fit-content; 
+            margin-left: 0; 
+        }
+        .lesson-content button:hover {
+            background-color: #3e444e;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar" dir="ltr">
+        <div class="sidebar-header">
+           Mathematic Grade 6 💻
+        </div>
+        <div class="sidebar-menu">
+            <a href="#" class="active">Main Dashboard 📊</a>
+        </div>
+        <div class="sidebar-footer">
+            <a href="#">Change Language (AR)</a>
+        </div>
+    </div>
+
+    <div class="main-content" dir="ltr">
+        <div class="main-card">
+            <h1>Mathematics Learning Track | First Semester</h1>
+
+            <div id="unit-selector" class="selector-section">
+                <h2>Select Your Learning Path (Unit):</h2>
+                <button onclick="showLessons('unit1')">Unit 1: Divisibility, Factors and Multiples</button>
+                <button onclick="showLessons('unit2')">Unit 2: Rational Numbers</button>
+                <button onclick="showLessons('unit3')">Unit 3: Algebraic Expressions</button>
+                <button onclick="showLessons('unit4')">Unit 4: Equations and Inequalities</button>
+                <button onclick="showLessons('unit5')">Unit 5: Dependent and Independent Variables</button>
+                <button onclick="showLessons('unit6')">Unit 6: Data Distributions</button>
+                <button onclick="showLessons('unit7')">Unit 7: Measure of Central Tendency and Spread</button>
+            </div>
+
+            <div id="lesson-selector" class="selector-section">
+                <h2>Select the Component (Lesson):</h2>
+                
+                <div id="unit1-lessons" style="display: none;">
+                    <button onclick="showLessonContent('lesson1_1')">Lesson 1: Divisibility (p. 16)</button>
+                    <button onclick="showLessonContent('lesson1_2')">Lesson 2: Factorizing a Number to its Prime Factors (p. 25)</button>
+                    <button onclick="showLessonContent('lesson1_3')">Lesson 3: Writing Expressions Using the G.C.F (p. 35)</button>
+                    <button onclick="showLessonContent('lesson1_4')">Lesson 4: Analyzing Least Common Multiples (p. 42)</button>
+                </div>
+
+                <div id="unit2-lessons" style="display: none;">
+                    <button onclick="showLessonContent('lesson2_1_2')">Lessons 1&2: Using a Number Line to Describe Data & Compare Numbers (p. 52)</button>
+                    <button onclick="showLessonContent('lesson2_3')">Lesson 3: Analyzing Rational Numbers by Using Models (p. 64)</button>
+                    <button onclick="showLessonContent('lesson2_4')">Lesson 4: Comparing and Ordering Rational Numbers (p. 73)</button>
+                    <button onclick="showLessonContent('lesson2_5_6')">Lessons 5&6: Exploring Absolute Value - Comparing Absolute Values (p. 81)</button>
+                </div>
+
+                <div id="unit3-lessons" style="display: none;">
+                    <button onclick="showLessonContent('lesson3_1_2')">Lessons 1&2: Creating & Analyzing Mathematical Expressions (p. 92)</button>
+                    <button onclick="showLessonContent('lesson3_3')">Lesson 3: Writing Algebraic Expressions (p. 102)</button>
+                    <button onclick="showLessonContent('lesson3_4_6')">Lessons 4 to 6: Ordering of Operations and Exponents - Evaluating Expressions (p. 111)</button>
+                    <button onclick="showLessonContent('lesson3_7')">Lesson 7: Determining Equivalent Algebraic Expressions (p. 123)</button>
+                </div>
+                
+                <div id="unit4-lessons" style="display: none;">
+                    <button onclick="showLessonContent('lesson4_1')">Lesson 1: Solving Algebraic Equations (p. 134)</button>
+                    <button onclick="showLessonContent('lesson4_2_3')">Lessons 2&3: Exploring Inequalities - Solving Inequalities (p. 142)</button>
+                </div>
+                
+                <div id="unit5-lessons" style="display: none;">
+                    <button onclick="showLessonContent('lesson5_1_2')">Lessons 1&2: The Relation between Dependent and Independent Variables (p. 156)</button>
+                    <button onclick="showLessonContent('lesson5_3_4')">Lessons 3&4: Analyzing the Relationship between Variables - Graph Representation (p. 163)</button>
+                </div>
+                
+                <div id="unit6-lessons" style="display: none;">
+                    <button onclick="showLessonContent('lesson6_1')">Lesson 1: Data and Statistical Questions (p. 174)</button>
+                    <button onclick="showLessonContent('lesson6_2_3')">Lessons 2&3: Exploring the Histogram - Representing Data Using Histograms (p. 183)</button>
+                    <button onclick="showLessonContent('lesson6_4')">Lesson 4: Exploring Box Plot (p. 192)</button>
+                    <button onclick="showLessonContent('lesson6_5')">Lesson 5: Applications on Data Representations (p. 200)</button>
+                </div>
+                
+                <div id="unit7-lessons" style="display: none;">
+                    <button onclick="showLessonContent('lesson7_1_2')">Lessons 1&2: Exploring the Balance of Data sets - Interpreting Mean (p. 214)</button>
+                    <button onclick="showLessonContent('lesson7_3')">Lesson 3: Exploring Median, Mode and Outliers (p. 224)</button>
+                    <button onclick="showLessonContent('lesson7_4')">Lesson 4: Exploring the Range (p. 237)</button>
+                </div>
+
+            </div>
+
+            <div id="lesson-display" class="lesson-content">
+                <h2 id="lesson-title-display"></h2>
+                <div id="lesson-details">
+                    </div>
+                <button onclick="document.location.reload()">Back to Main Track Selection</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const unitSelector = document.getElementById('unit-selector');
+        const lessonSelector = document.getElementById('lesson-selector');
+        const lessonDisplay = document.getElementById('lesson-display');
+        const lessonTitleDisplay = document.getElementById('lesson-title-display');
+        const lessonDetails = document.getElementById('lesson-details');
+
+        // Lesson Data Dictionary (English Only, No LaTeX)
+        const lessonsData = {
+            // *************** Unit 1: Divisibility, Factors and Multiples ***************
+            'lesson1_1': {
+                title: "Unit 1 - Lesson 1: Divisibility",
+                content: `
+                    <h3>» What is Divisibility?</h3>
+                    <p>Divisibility means that **dividing a whole number by another results in a whole number with zero remainder**.</p>
+                    
+                    <h4>Basic Divisibility Rules:</h4>
+                    <ul>
+                        <li>**Divisible by 2:** If the **Ones digit** is an even number (0, 2, 4, 6, 8).</li>
+                        <li>**Divisible by 3:** If the **sum of the number's digits** is divisible by 3. (Example: 123 -> 1+2+3=6, and 6 is divisible by 3).</li>
+                        <li>**Divisible by 5:** If the Ones digit is **0 or 5**.</li>
+                        <li>**Divisible by 6:** If the number is divisible by **both 2 and 3**.</li>
+                    </ul>
+                    <div class="reminder">
+                        **Key Note:** The number 18 is divisible by 6 because it is divisible by 2 (its ones digit is even) and by 3 (1+8=9).
+                    </div>
+                `
+            },
+            'lesson1_2': {
+                title: "Unit 1 - Lesson 2: Factorizing a Number to its Prime Factors",
+                content: `
+                    <h3>» Concept of Prime Factors:</h3>
+                    <p>A **Prime Number** is a whole number greater than 1 that has exactly two factors: 1 and itself (e.g., 2, 3, 5, 7, 11, ...).</p>
+                    <p>Prime Factorization is the process of **writing a number as a product of only prime numbers**.</p>
+                    
+                    <h4>Factorization Method:</h4>
+                    <p>Use the Factor Tree or repeated division. Start by dividing the number by the smallest possible prime factor and continue until all factors are prime.</p>
+                    <p><strong>Example:</strong> Prime factorization of 60 is **2 * 2 * 3 * 5**.</p>
+                    <p>The expression using exponents is: **60 = 2 ^ 2 * 3 * 5**.</p>
+                `
+            },
+            'lesson1_3': {
+                title: "Unit 1 - Lesson 3: Writing Expressions Using the G.C.F",
+                content: `
+                    <h3>» Greatest Common Factor (G.C.F):</h3>
+                    <p>The G.C.F is the **largest number** that divides two or more numbers without a remainder. It is useful for simplifying fractions and rewriting expressions.</p>
+                    
+                    <h4>Using G.C.F to Rewrite Expressions:</h4>
+                    <p>We use the reverse Distributive Property: **a * b + a * c = a * (b + c)**</p>
+                    <p>If you have the expression **12 + 18**. The **G.C.F is 6**.</p>
+                    <p>We rewrite the expression:</p>
+                    <p class="math-text">**12 + 18 = 6 * 2 + 6 * 3 = 6 * (2 + 3)**.</p>
+                    <div class="reminder">
+                        **Goal:** Simplify the expression by factoring out the greatest common factor.
+                    </div>
+                `
+            },
+            'lesson1_4': {
+                title: "Unit 1 - Lesson 4: Analyzing Least Common Multiples (L.C.M)",
+                content: `
+                    <h3>» Least Common Multiple (L.C.M):</h3>
+                    <p>The L.C.M is the **smallest number** that is a multiple of two or more numbers. It is primarily used for **finding common denominators** when adding or subtracting fractions.</p>
+                    
+                    <h4>How to Find the L.C.M?</h4>
+                    <p>List the Multiples until you find the first common one.</p>
+                    <p><strong>Example:</strong> Find the L.C.M of 4 and 6.</p>
+                    <ul>
+                        <li>Multiples of 4: 4, 8, **12**, 16, 20, 24, ...</li>
+                        <li>Multiples of 6: 6, **12**, 18, 24, 30, ...</li>
+                    </ul>
+                    <p>The **L.C.M is 12**.</p>
+                `
+            },
+
+            // *************** Unit 2: Rational Numbers ***************
+            'lesson2_1_2': {
+                title: "Unit 2 - Lessons 1&2: Using a Number Line to Describe Data & Compare Numbers",
+                content: `
+                    <h3>» Integers and the Number Line:</h3>
+                    <p>Integers include positive numbers (1, 2, 3, ...), negative numbers (-1, -2, -3, ...), and zero (0).</p>
+                    
+                    <h4>Comparing using the Number Line:</h4>
+                    <ul>
+                        <li>The farther a number is to the **right** on the number line, the **greater its value** is.</li>
+                        <li>The farther a number is to the **left** on the number line, the **smaller its value** is.</li>
+                    </ul>
+                    <p><strong>Example:</strong> **-5 is less than -2** (-5 < -2).</p>
+                    <div class="reminder">
+                        **Remember:** Any negative number is always less than any positive number.
+                    </div>
+                `
+            },
+            'lesson2_3': {
+                title: "Unit 2 - Lesson 3: Analyzing Rational Numbers by Using Models",
+                content: `
+                    <h3>» Rational Numbers:</h3>
+                    <p>Rational numbers are numbers that can be written as a **fraction a/b**, where a and b are integers and b is not 0.</p>
+                    
+                    <h4>Using Models:</h4>
+                    <p>Models (like number lines or divided shapes) are used to visualize and understand the value of rational numbers.</p>
+                    <p><strong>Example:</strong> The rational number **3/4** can be modeled as a circle divided into 4 equal parts with 3 parts shaded.</p>
+                `
+            },
+            'lesson2_4': {
+                title: "Unit 2 - Lesson 4: Comparing and Ordering Rational Numbers",
+                content: `
+                    <h3>» Comparing and Ordering Numbers:</h3>
+                    <p>To compare rational numbers, you must first **convert them into the same format** (all fractions with a common denominator, or all decimals).</p>
+                    
+                    <h4>Ordering Steps (Ascending/Descending):</h4>
+                    <ul>
+                        <li>**Convert:** Change all numbers to decimals. Example: **1/4 = 0.25**.</li>
+                        <li>**Compare:** Compare the whole number parts first, then compare the decimal parts.</li>
+                    </ul>
+                    <div class="reminder">
+                        **Example:** The ascending order of **1/4**, **0.3**, and **0.2** is **0.2, 0.25, 0.3**.
+                    </div>
+                `
+            },
+            'lesson2_5_6': {
+                title: "Unit 2 - Lessons 5&6: Exploring Absolute Value - Comparing Absolute Values",
+                content: `
+                    <h3>» Definition of Absolute Value:</h3>
+                    <p>The **Absolute Value** of a number, denoted by **|x|**, is the **distance** between that number and zero on the number line. It is **always positive or zero**.</p>
+                    
+                    <h4>Examples and Interpretation:</h4>
+                    <ul>
+                        <li>|5| = 5.</li>
+                        <li>|-5| = 5.</li>
+                    </ul>
+                    <p><strong>Application:</strong> **|-8| is greater than |3|** because 8 is greater than 3.</p>
+                `
+            },
+            
+            // *************** Unit 3: Algebraic Expressions ***************
+            'lesson3_1_2': {
+                title: "Unit 3 - Lessons 1&2: Creating & Analyzing Mathematical Expressions",
+                content: `
+                    <h3>» Definition of a Mathematical Expression:</h3>
+                    <p>A Mathematical Expression is a collection of numbers, variables (like x, y), and operations (+, -, *, /). It **does not contain an equals sign (=)**.</p>
+                    
+                    <h4>Analyzing the Expression (Components):</h4>
+                    <ul>
+                        <li>**Term:** Each part separated by addition or subtraction.</li>
+                        <li>**Variable:** A symbol (x or y) representing an unknown value.</li>
+                        <li>**Coefficient:** The number multiplied by the variable (e.g., in **3x**, the coefficient is 3).</li>
+                        <li>**Constant:** A number that does not change (e.g., in **3x + 5**, the constant is 5).</li>
+                    </ul>
+                `
+            },
+            'lesson3_3': {
+                title: "Unit 3 - Lesson 3: Writing Algebraic Expressions",
+                content: `
+                    <h3>» Translation from Words to Algebra:</h3>
+                    <p>Translate verbal phrases into algebraic expressions by identifying operation keywords.</p>
+                    
+                    <h4>Key Words for Operations:</h4>
+                    <ul>
+                        <li>**Addition (+):** Sum, increased by, more than. (Example: 4 more than x is **x + 4**).</li>
+                        <li>**Subtraction (-):** Difference, less than. (Example: 7 less than y is **y - 7**).</li>
+                        <li>**Multiplication (*):** Product, times. (Example: four times z is **4z**).</li>
+                        <li>**Division (/):** Quotient, divided by. (Example: a divided by 5 is **a/5**).</li>
+                    </ul>
+                `
+            },
+            'lesson3_4_6': {
+                title: "Unit 3 - Lessons 4 to 6: Ordering of Operations and Exponents - Evaluating Expressions",
+                content: `
+                    <h3>» Order of Operations (PEMDAS / GEMS):</h3>
+                    <p>The order is: **P/G (Parentheses/Grouping), E (Exponents), M/D (Multiplication and Division, Left-to-Right), A/S (Addition and Subtraction, Left-to-Right)**.</p>
+                    
+                    <h4>Evaluating Expressions:</h4>
+                    <p>Evaluation means **substituting a specific value for the variables** (e.g., x=3) and then calculating the final value.</p>
+                    <p><strong>Example:</strong> The value of **2x + 1** when x=3 is **2 * (3) + 1 = 7**.</p>
+                `
+            },
+            'lesson3_7': {
+                title: "Unit 3 - Lesson 7: Determining Equivalent Algebraic Expressions",
+                content: `
+                    <h3>» Equivalent Algebraic Expressions:</h3>
+                    <p>Two expressions are equivalent if they **give the same final value** for any variable value.</p>
+                    
+                    <h4>Proving Equivalence:</h4>
+                    <p>Use properties like the **Distributive Property** or **Combining Like Terms**.</p>
+                    <ul>
+                        <li>**Distributive Property:** **3 * (x + 2)** is equivalent to **3x + 6**.</li>
+                        <li>**Combining Like Terms:** **5x + 2x + 1** is equivalent to **7x + 1**.</li>
+                    </ul>
+                `
+            },
+
+            // *************** Unit 4: Equations and Inequalities ***************
+            'lesson4_1': {
+                title: "Unit 4 - Lesson 1: Solving Algebraic Equations",
+                content: `
+                    <h3>» Definition of an Equation:</h3>
+                    <p>An Equation says **two expressions are equal** (=). The goal is to find the value of the unknown variable.</p>
+                    
+                    <h4>Inverse Operations:</h4>
+                    <p>Use the inverse operation (addition vs subtraction, multiplication vs division) to isolate the variable, applying the same operation to both sides.</p>
+                    <p><strong>Example:</strong> To solve **x + 5 = 12**, subtract 5 from both sides: **x = 7**.</p>
+                `
+            },
+            'lesson4_2_3': {
+                title: "Unit 4 - Lessons 2&3: Exploring Inequalities - Solving Inequalities",
+                content: `
+                    <h3>» Inequalities:</h3>
+                    <p>A statement using comparison symbols: **<, >, <=, >=**. The solution is a **set of values**.</p>
+                    
+                    <h4>Solving Rule:</h4>
+                    <div class="reminder">
+                        **Golden Rule:** When multiplying or dividing both sides of an inequality by a **negative number**, you must **reverse the inequality sign**.
+                    </div>
+                    <p>The solution is graphed on a number line with an open or closed circle and shading in the correct direction.</p>
+                `
+            },
+            
+            // *************** Unit 5: Dependent and Independent Variables ***************
+            'lesson5_1_2': {
+                title: "Unit 5 - Lessons 1&2: The Relation between Dependent and Independent Variables",
+                content: `
+                    <h3>» The Relationship between Variables:</h3>
+                    <p>There are two types of variables:</p>
+                    <ul>
+                        <li>**Independent Variable (Input):** The value that is chosen (usually x).</li>
+                        <li>**Dependent Variable (Output):** The value that **depends** on the independent variable (usually y).</li>
+                    </ul>
+                    <p><strong>Example:</strong> If the cost of apples (y) depends on the number of apples you buy (x). **x is Independent, y is Dependent**.</p>
+                `
+            },
+            'lesson5_3_4': {
+                title: "Unit 5 - Lessons 3&4: Analyzing the Relationship between Variables - Graph Representation",
+                content: `
+                    <h3>» Analyzing and Representing Relationships:</h3>
+                    <p>Relationships can be shown verbally, in a **Table**, or using a **Graph**.</p>
+                    
+                    <h4>Graphing (Coordinate Plane):</h4>
+                    <p>The **Horizontal Axis (x-axis)** is the Independent Variable. The **Vertical Axis (y-axis)** is the Dependent Variable.</p>
+                    <p>The graph shows how y changes as x changes.</p>
+                `
+            },
+            
+            // *************** Unit 6: Data Distributions ***************
+            'lesson6_1': {
+                title: "Unit 6 - Lesson 1: Data and Statistical Questions",
+                content: `
+                    <h3>» Data and Statistical Questions:</h3>
+                    <p>A **Statistical Question** is a question whose answer has **variability** (different answers).</p>
+                    <p><strong>Statistical Example:</strong> "How many hours do students spend doing sports per week?" (Answers vary).</p>
+                    <p><strong>Non-Statistical Example:</strong> "How old is the math teacher?" (Single answer).</p>
+                `
+            },
+            'lesson6_2_3': {
+                title: "Unit 6 - Lessons 2&3: Exploring the Histogram - Representing Data Using Histograms",
+                content: `
+                    <h3>» Histogram:</h3>
+                    <p>A Histogram is a bar graph that uses **adjacent bars** to display the frequency of data grouped into equal-sized **intervals** (bins).</p>
+                    
+                    <h4>Goal:</h4>
+                    <p>It shows the **shape of the data distribution** (how the data is spread or clustered).</p>
+                `
+            },
+            'lesson6_4': {
+                title: "Unit 6 - Lesson 4: Exploring Box Plot",
+                content: `
+                    <h3>» Box Plot (Box-and-Whisker Plot):</h3>
+                    <p>A graph that summarizes a data set using the **Five-Number Summary**.</p>
+                    
+                    <h4>The Five-Number Summary:</h4>
+                    <ul>
+                        <li>**Minimum**</li>
+                        <li>**Q1 (First Quartile)** (25% mark)</li>
+                        <li>**Median (Q2)** (50% mark)</li>
+                        <li>**Q3 (Third Quartile)** (75% mark)</li>
+                        <li>**Maximum**</li>
+                    </ul>
+                `
+            },
+            'lesson6_5': {
+                title: "Unit 6 - Lesson 5: Applications on Data Representations",
+                content: `
+                    <h3>» Applications and Data Analysis:</h3>
+                    <p>Analyze Histograms and Box Plots to determine:</p>
+                    <ul>
+                        <li>**Shape of Distribution:** Symmetric, skewed right, or skewed left.</li>
+                        <li>**Measures of Center:** Where the middle of the data is (Mean, Median).</li>
+                        <li>**Measures of Spread:** How spread out the data is (Range).</li>
+                    </ul>
+                `
+            },
+
+            // *************** Unit 7: Measure of Central Tendency and Spread ***************
+            'lesson7_1_2': {
+                title: "Unit 7 - Lessons 1&2: Exploring the Balance of Data sets - Interpreting Mean",
+                content: `
+                    <h3>» Mean (Average):</h3>
+                    <p>The **Mean** (Average) is the most common Measure of Central Tendency, calculated by:</p>
+                    <p class="math-text">**Mean = (Sum of all Values) / (Number of Values)**</p>
+                    
+                    <h4>Interpreting the Mean:</h4>
+                    <p>The Mean represents the **balance point**. **It is heavily affected by Outliers**.</p>
+                `
+            },
+            'lesson7_3': {
+                title: "Unit 7 - Lesson 3: Exploring Median, Mode and Outliers",
+                content: `
+                    <h3>» Median and Mode:</h3>
+                    <ul>
+                        <li>**Median:** The **middle value** in an ordered data set.</li>
+                        <li>**Mode:** The **most frequently occurring value**.</li>
+                    </ul>
+                    <h4>Outliers:</h4>
+                    <p>Outliers are values **very distant** from the others. They influence the Mean but not the Median or Mode much.</p>
+                `
+            },
+            'lesson7_4': {
+                title: "Unit 7 - Lesson 4: Exploring the Range",
+                content: `
+                    <h3>» Range as a Measure of Spread:</h3>
+                    <p>The **Range** measures the **spread or variability** of the data.</p>
+                    <p class="math-text">**Range = Maximum Value - Minimum Value**</p>
+                    
+                    <h4>Interpreting the Range:</h4>
+                    <p>A **larger Range** means the data is more **spread out**. A **smaller Range** means the data is more **clustered**.</p>
+                `
+            },
+        };
+
+
+        // Function to display unit lessons
+        function showLessons(unitId) {
+            document.querySelectorAll('#lesson-selector > div').forEach(div => div.style.display = 'none');
+            
+            const unitLessonsDiv = document.getElementById(unitId + '-lessons');
+            
+            if (unitLessonsDiv) {
+                unitLessonsDiv.style.display = 'flex'; 
+                unitSelector.style.display = 'none';
+                lessonSelector.style.display = 'flex';
+            } else {
+                alert('Sorry, this unit is not yet active. Please select an active unit.');
+                unitSelector.style.display = 'flex';
+                lessonSelector.style.display = 'none';
+            }
+        }
+
+        // Function to display lesson content
+        function showLessonContent(lessonId) {
+            const lesson = lessonsData[lessonId];
+            if (lesson) {
+                lessonTitleDisplay.textContent = lesson.title;
+                lessonDetails.innerHTML = lesson.content;
+                
+                lessonSelector.style.display = 'none';
+                lessonDisplay.style.display = 'block';
+            } else {
+                 alert('Content for this lesson is under final processing.');
+            }
+        }
+        
+        // Initial setup on page load
+        window.onload = function() {
+            lessonSelector.style.display = 'none';
+            lessonDisplay.style.display = 'none';
+            unitSelector.style.display = 'flex'; 
+        }
+    </script>
+
+</body>
+</html>
